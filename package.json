@@ -1,5 +1,5 @@
 {
-  "name": "react-screen-orientation",
+  "name": "@howitzer-industries/react-screen-orientation",
   "version": "0.0.4",
   "description": "Display Components based on screen orientation",
   "main": "./lib/index.js",
@@ -10,7 +10,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zeroseven/react-screen-orientation.git"
+    "url": "git://github.com/howitzer-industries/react-screen-orientation.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   },
   "keywords": [
     "react"
