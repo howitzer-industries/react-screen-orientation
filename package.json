@@ -1,6 +1,6 @@
 {
   "name": "@howitzer-industries/react-screen-orientation",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Display Components based on screen orientation",
   "main": "./lib/index.js",
   "scripts": {
