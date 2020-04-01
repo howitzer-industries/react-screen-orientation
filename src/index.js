@@ -51,7 +51,7 @@ export default class DeviceOrientation extends Component {
 
   constructor (props) {
     super(props)
-    this.logLevel = props.logLevel ? LOG_LEVELS[props.logLevel] : DEFAULT_LOG_LEVEL
+    this.logLevel = LOG_LEVELS[props.logLevel]
     this.lockOrientation(props)
     this.onOrientationChange = this.onOrientationChange.bind(this)
 
@@ -187,8 +187,6 @@ const LOG_LEVELS = {
   'none': 5
 }
 
-const DEFAULT_LOG_LEVEL = LOG_LEVELS.warn
-
 DeviceOrientation.propTypes = {
   children: PropTypes.oneOfType([
     isOrientation,
@@ -205,5 +203,5 @@ DeviceOrientation.propTypes = {
 
 DeviceOrientation.defaultProps = {
   className: "",
-  logLevel: DEFAULT_LOG_LEVEL
+  logLevel: 'warn'
 };
