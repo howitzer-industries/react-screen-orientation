@@ -51,6 +51,7 @@ export default class DeviceOrientation extends Component {
 
   constructor (props) {
     super(props)
+    this.logLevel = props.logLevel || DEFAULT_LOG_LEVEL
     this.lockOrientation(props)
     this.onOrientationChange = this.onOrientationChange.bind(this)
 
@@ -61,30 +62,49 @@ export default class DeviceOrientation extends Component {
     }
   }
 
+  log(severity, message) {
+    const componentName = 'DeviceOrientation';
+    if (severity < this.logLevel) {
+      return
+    }
+
+    if (severity >= LOG_LEVELS.error) {
+      console.error(componentName, message)
+      return
+    }
+
+    if (severity >= LOG_LEVELS.warn) {
+      console.warn(componentName, message)
+      return
+    }
+
+    console.log(componentName, message)
+  }
+
   UNSAFE_componentWillMount () {
     this.onOrientationChange(null)
   }
 
   componentDidMount () {
-    console.log('DeviceOrientation', 'componentDidMount')
+    this.log(LOG_LEVELS.debug, 'componentDidMount')
     if ((window.screen.orientation) && ('onchange' in window.screen.orientation)) {
-      console.log('Using screen.orientation.onchange')
+      this.log(LOG_LEVELS.info, 'Using screen.orientation.onchange')
       window.screen.orientation.addEventListener('change', this.onOrientationChange)
     } else if ('onorientationchange' in window) {
-      console.log('Using window.onorientationchange')
+      this.log(LOG_LEVELS.info, 'Using window.onorientationchange')
       window.addEventListener('orientationchange', this.onOrientationChange)
     } else {
-      console.warn('No orientationchange events')
+      this.log(LOG_LEVELS.warn, 'No orientationchange events')
     }
   }
 
   componentWillUnmount () {
-    console.log('DeviceOrientation', 'componentWillUnmount')
+    this.log(LOG_LEVELS.debug, 'componentWillUnmount')
     if ((window.screen.orientation) && ('onchange' in window.screen.orientation)) {
-      console.log('Removing screen.orientation.onchange')
+      this.log(LOG_LEVELS.debug, 'Removing screen.orientation.onchange')
       window.screen.orientation.removeEventListener('change', this.onOrientationChange)
     } else if ('onorientationchange' in window) {
-      console.log('Removing window.onorientationchange')
+      this.log(LOG_LEVELS.debug, 'Removing window.onorientationchange')
       window.removeEventListener('orientationchange', this.onOrientationChange)
     }
   }
@@ -133,8 +153,6 @@ export default class DeviceOrientation extends Component {
             const { props } = child
             if (props.alwaysRender || props.orientation === orientation) {
               return child
-            // } else {
-            //   console.log('Skipping child', child)
             }
           })
         }
@@ -161,6 +179,16 @@ const isOrientation = (props, propName, componentName, location, propFullName) =
   }
 }
 
+const LOG_LEVELS = {
+  'debug': 1,
+  'info': 2,
+  'warn': 3,
+  'error': 4,
+  'none': 5
+}
+
+const DEFAULT_LOG_LEVEL = LOG_LEVELS.warn
+
 DeviceOrientation.propTypes = {
   children: PropTypes.oneOfType([
     isOrientation,
@@ -176,5 +204,6 @@ DeviceOrientation.propTypes = {
 }
 
 DeviceOrientation.defaultProps = {
-  className: ''
-}
+  className: "",
+  logLevel: DEFAULT_LOG_LEVEL
+};
